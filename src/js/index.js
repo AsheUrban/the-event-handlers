@@ -12,7 +12,8 @@ window.addEventListener("load", () => {
       window.addEventListener("keydown", e => {
         if (((e.key === "ArrowUp") || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1) {
           this.game.keys.push(e.key);
-        } else if (e.key === " ") {
+        }
+        if (e.key === " ") {
           this.game.player.shootTop();
         }
       });
@@ -32,7 +33,7 @@ window.addEventListener("load", () => {
       this.y = y;
       this.width = 10;
       this.height = 3;
-      this.speed = 3;
+      this.speed = 13;
       this.markedForDeletion = false;
     }
     update() {
@@ -89,7 +90,30 @@ window.addEventListener("load", () => {
     }
   }
 
-  class Enemy {}
+  class Enemy {
+    constructor(game) {
+      this.game = game;
+      this.x = this.game.width;
+      this.speedX = Math.random() * -1.5 - 0.5;
+      this.markedForDeletion = false;
+    }
+    update() {
+      this.x += this.speedX;
+      if (this.x + this.width < 0) this.markedForDeletion = true;
+    }
+    draw(context) {
+      context.fillStyle = 'orange';
+      context.fillReact(this.x, this.y, this.width, this.height);
+    }
+  }
+  class Angler1 extends Enemy {
+    constructor(game) {
+      super(game);
+      this.width = 100;
+      this.height = 100;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+    }
+  }
 
   class Layer {}
 
@@ -100,14 +124,14 @@ window.addEventListener("load", () => {
       this.game = game;
       this.fontSize = 25;
       this.fontFamily = 'Helvetica';
-      this.color = 'white';
+      this.color = 'lightpink';
 
     }
     draw(context) {
       //ammo
       context.fillStyle = this.color;
       for(let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20, 50, 3, 20);
+        context.fillRect(20 + 5 * i, 50, 3, 20);
       }
     }
   }
@@ -120,12 +144,15 @@ window.addEventListener("load", () => {
       this.input = new InputHandler(this);
       this.ui = new UI(this);
       this.keys = [];
+      this.enemies = [];
+      this.enemyTimer=0;
+      this.enemyInterval = 1000;
       this.ammo = 20;
-      this.maxAmmo = 50
+      this.maxAmmo = 50;
       this.ammoTimer = 0;
-      this.ammoInterval = 500;
+      this.ammoInterval = 200;
+      this.gameOver = false;
     }
-
     update(deltaTime) {
       this.player.update();
       if(this.ammoTimer > this.ammoInterval) {
@@ -136,12 +163,32 @@ window.addEventListener("load", () => {
       } else {
         this.ammoTimer += deltaTime;
       }
-    }
+      this.enemies.forEach(enemy => {
+        enemy.update();
+      });
 
+      this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
+
+      if (this.enemyTime > this.enemyInterval && !this.gameOver) {
+        this.addEnemy();
+        this.enemyTimer = 0;
+      } else {
+        this.enemyTimer += deltaTime;
+      }
+    }
     draw(context) {
       this.player.draw(context);
+      this.ui.draw(context);
+      this.enemies.forEach(enemy => {
+        enemy.draw(context);
+      })
+    }
+    addEnemy() {
+      
+      this.enemies.push(new Angler1(this));
     }
   }
+  
   const game = new Game(canvas.width, canvas.height);
   let lastTime = 0;
   // animation loop
