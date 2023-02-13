@@ -19,7 +19,7 @@ module.exports = {
       verbose: true
     }),
     new HtmlWebpackPlugin({
-      title: 'JavaScript Template',
+      title: 'The Event Handlers',
       template: './src/index.html',
       inject: 'body'
     })

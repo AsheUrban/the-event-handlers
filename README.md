@@ -1,8 +1,6 @@
-# _JavaScript Template_
+# _The Event Handlers_
 
-## EDIT BEFORE COMMITING
-
-#### By _Ashe Urban & Vera Weikel_
+#### By _Ashe Urban, Mitchell Gantz, Jannon Sielaff, Jacob Maier, Jackson Levine, & Carl S._
 
 #### _This project is serving as a template respository for future work_
 
