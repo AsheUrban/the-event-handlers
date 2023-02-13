@@ -147,6 +147,26 @@ window.addEventListener("load", () => {
       for(let i = 0; i < this.game.ammo; i++) {
         context.fillRect(20 + 5 * i, 50, 3, 20);
       }
+      // Timer
+      const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
+      context.fillText('Timer:' + formattedTime, 20, 100);
+      // game over messages
+      if(this.game.gameOver) {
+        context.textAlign = "center";
+        let message1;
+        let message2;
+        if (this.game.score > this.game.winningScore) {
+          message1 = "You win!";
+          message2 = "Don't let it go to your head.";
+        } else {
+          message1 = "You lose!"
+          message2 = "No surprise there.";
+        }
+        context.font = "50px " + this.fontFamily;
+        context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
+        context.font = "25px " + this.fontFamily;
+        context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
+      }
       context.restore();
     }
   }
@@ -169,8 +189,12 @@ window.addEventListener("load", () => {
       this.gameOver = false;
       this.score = 0;
       this.winningScore = 10;
+      this.gameTime = 0;
+      this.timeLimit = 30000;
     }
     update(deltaTime) {
+      if (!this.gameOver) this.gameTime += deltaTime;
+      if (this.gameTime > this.timeLimit) this.gameOver = true;
       this.player.update();
       if(this.ammoTimer > this.ammoInterval) {
         if(this.ammo < this.maxAmmo) {
@@ -191,8 +215,8 @@ window.addEventListener("load", () => {
             projectile.markedForDeletion = true;
             if (enemy.lives <= 0){
               enemy.markedForDeletion = true;
-              this.score += enemy.score;
-              if(this.score > this.winningScore) this.gameOver = true;
+              if (!this.gameOver) this.score += enemy.score;
+              if (this.score > this.winningScore) this.gameOver = true;
             }
           }
         })
