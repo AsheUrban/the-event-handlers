@@ -12,9 +12,11 @@ window.addEventListener("load", () => {
       window.addEventListener('keydown', e => {
         if (e.key === "ArrowUp") {
           this.game.keys.up = true;
+          this.game.keys.lastPressed = 'up';
         }
         if (e.key==="ArrowDown") {
           this.game.keys.down = true;
+          this.game.keys.lastPressed = 'down';
         }
         if (e.key === " ") {
           this.game.keys.shoot = true;
@@ -68,13 +70,16 @@ window.addEventListener("load", () => {
       this.projectiles = [];
     }
     update() {
-      if (this.game.keys.up && this.y > -20) {
+      if (this.game.keys.up === true && this.game.keys.down === true) {
+        this.game.keys.lastPressed === "up" ? this.speedY = -this.maxSpeed : this.speedY = this.maxSpeed;
+      } else if (this.game.keys.up && this.y > -20) {
         this.speedY = -this.maxSpeed;
       } else if (this.game.keys.down && (this.y +this.height < 530)) {
         this.speedY = this.maxSpeed;
       } else {
         this.speedY = 0;
       }
+      
       if (this.game.keys.shoot && this.game.firingInterval>75) this.game.player.shootTop();
       this.y += this.speedY;
       //handle projectiles
@@ -187,7 +192,7 @@ window.addEventListener("load", () => {
       this.player = new Player(this);
       this.input = new InputHandler(this);
       this.ui = new UI(this);
-      this.keys = {up: false, down: false, shoot: false};
+      this.keys = {up: false, down: false, shoot: false, lastPressed: 'up'};
       this.enemies = [];
       this.enemyTimer=0;
       this.enemyInterval = 1000;
