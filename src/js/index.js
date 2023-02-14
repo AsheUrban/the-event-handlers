@@ -9,20 +9,28 @@ window.addEventListener("load", () => {
   class InputHandler {
     constructor(game) {
       this.game = game;
-      window.addEventListener("keydown", e => {
-        if (((e.key === "ArrowUp") || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1) {
-          this.game.keys.push(e.key);
+      window.addEventListener('keydown', e => {
+        if (e.key === "ArrowUp") {
+          this.game.keys.up = true;
+        }
+        if (e.key==="ArrowDown") {
+          this.game.keys.down = true;
         }
         if (e.key === " ") {
-          this.game.player.shootTop();
+          this.game.keys.shoot = true;
         }
       });
       window.addEventListener('keyup', e => {
-        if(this.game.keys.indexOf(e.key) > -1) {
-          this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
+        if (e.key === "ArrowUp") {
+          this.game.keys.up = false; 
+        }
+        if (e.key==="ArrowDown") {
+          this.game.keys.down = false;
+        }
+        if (e.key === " ") {
+          this.game.keys.shoot = false;
         }
       });
-      
     }
   }
 
@@ -60,13 +68,14 @@ window.addEventListener("load", () => {
       this.projectiles = [];
     }
     update() {
-      if (this.game.keys.includes('ArrowUp')) {
+      if (this.game.keys.up && this.y > -20) {
         this.speedY = -this.maxSpeed;
-      } else if (this.game.keys.includes('ArrowDown')) {
+      } else if (this.game.keys.down && (this.y +this.height < 530)) {
         this.speedY = this.maxSpeed;
       } else {
         this.speedY = 0;
       }
+      if (this.game.keys.shoot && this.game.firingInterval>75) this.game.player.shootTop();
       this.y += this.speedY;
       //handle projectiles
       this.projectiles.forEach(projectile => {
@@ -75,7 +84,7 @@ window.addEventListener("load", () => {
       this.projectiles = this.projectiles.filter(projectile => !projectile.markedForDeletion);
     }
     draw(context) {
-      context.fillStyle = 'purple';
+      context.fillStyle = 'magenta';
       context.fillRect(this.x, this.y, this.width, this.height);
       this.projectiles.forEach(projectile => {
         projectile.draw(context);
@@ -86,7 +95,7 @@ window.addEventListener("load", () => {
         this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 60));
         this.game.ammo--;
       }
-
+      this.game.firingInterval = 0;
     }
   }
 
@@ -159,7 +168,7 @@ window.addEventListener("load", () => {
           message1 = "You win!";
           message2 = "Don't let it go to your head.";
         } else {
-          message1 = "You lose!"
+          message1 = "You lose!";
           message2 = "No surprise there.";
         }
         context.font = "50px " + this.fontFamily;
@@ -178,12 +187,13 @@ window.addEventListener("load", () => {
       this.player = new Player(this);
       this.input = new InputHandler(this);
       this.ui = new UI(this);
-      this.keys = [];
+      this.keys = {up: false, down: false, shoot: false};
       this.enemies = [];
       this.enemyTimer=0;
       this.enemyInterval = 1000;
       this.ammo = 20;
       this.maxAmmo = 50;
+      this.firingInterval = 0;
       this.ammoTimer = 0;
       this.ammoInterval = 200;
       this.gameOver = false;
@@ -193,6 +203,7 @@ window.addEventListener("load", () => {
       this.timeLimit = 30000;
     }
     update(deltaTime) {
+      this.firingInterval += deltaTime;
       if (!this.gameOver) this.gameTime += deltaTime;
       if (this.gameTime > this.timeLimit) this.gameOver = true;
       this.player.update();
@@ -219,7 +230,7 @@ window.addEventListener("load", () => {
               if (this.score > this.winningScore) this.gameOver = true;
             }
           }
-        })
+        });
       });
 
       this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
@@ -236,16 +247,17 @@ window.addEventListener("load", () => {
       this.ui.draw(context);
       this.enemies.forEach(enemy => {
         enemy.draw(context);
-      })
+      });
     }
     addEnemy() {
       this.enemies.push(new Angler1(this));
     }
     checkCollision(rect1, rect2){
-      return (  rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.height +rect1.y > rect2.y)
+      const checkLeft = rect1.x < rect2.x + rect2.width;
+      const checkRight = rect1.x + rect1.width > rect2.x;
+      const checkBottom = rect1.y < rect2.y + rect2.height;
+      const checkTop = rect1.height +rect1.y > rect2.y;
+      return (checkLeft && checkRight && checkTop && checkBottom);
     }
   }
   
@@ -262,4 +274,3 @@ window.addEventListener("load", () => {
   }
   animate(0);
 });
-
