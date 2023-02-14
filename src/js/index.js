@@ -68,6 +68,9 @@ window.addEventListener("load", () => {
       this.speedY = 0;
       this.maxSpeed = 5;
       this.projectiles = [];
+      this.powerUp = false;
+      this.powerUpTimer = 0;
+      this.powerUpLimit = 10000;
     }
     update() {
       if (this.game.keys.up === true && this.game.keys.down === true) {
@@ -87,6 +90,15 @@ window.addEventListener("load", () => {
         projectile.update();
       });
       this.projectiles = this.projectiles.filter(projectile => !projectile.markedForDeletion);
+      //power up
+      if (this.powerUp){
+        if (this.powerUpTimer > this.powerUpLimit){
+          this.powerUpTimer = 0;
+          this.powerUp = false;
+        } else { 
+          this.powerUpTimer += deltaTime;
+        }
+      }
     }
     draw(context) {
       context.fillStyle = 'magenta';
@@ -110,8 +122,7 @@ window.addEventListener("load", () => {
       this.x = this.game.width;
       this.speedX = Math.random() * -1.5 - 0.5;
       this.markedForDeletion = false;
-      this.lives = 5;
-      this.score = this.lives;
+
 
     }
     update() {
@@ -132,6 +143,38 @@ window.addEventListener("load", () => {
       this.width = 100 * .5;
       this.height = 100 * .5;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.lives = 5;
+      this.score = this.lives;
+      //character animation
+      //this.image = document.getElementById('angler1');
+      //this.frameY = Math.floor(Math.random()* 3);
+    }
+  }
+  class Angler2 extends Enemy {
+    constructor(game) {
+      super(game);
+      this.width = 100 * .75;
+      this.height = 100 * .75;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.lives = 10;
+      this.score = this.lives;
+      //character animation
+      //this.image = document.getElementById('angler2');
+      //this.frameY = Math.floor(Math.random()* 3);
+    }
+  }
+  class LuckyFish extends Enemy {
+    constructor(game) {
+      super(game);
+      this.width = 100 * .75;
+      this.height = 100 * .75;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.lives = 3;
+      this.score = 15;
+      this.type = 'lucky';
+      //character animation
+      //this.image = document.getElementById('lucky');
+      //this.frameY = Math.floor(Math.random()* 3);
     }
   }
 
@@ -206,6 +249,7 @@ window.addEventListener("load", () => {
       this.winningScore = 10;
       this.gameTime = 0;
       this.timeLimit = 30000;
+      //this.speed = 1;
     }
     update(deltaTime) {
       this.firingInterval += deltaTime;
@@ -253,9 +297,14 @@ window.addEventListener("load", () => {
       this.enemies.forEach(enemy => {
         enemy.draw(context);
       });
+      //this.background.layer4.draw(context);
     }
     addEnemy() {
-      this.enemies.push(new Angler1(this));
+      const randomize = Math.random();
+      if (randomize < 0.3) this.enemies.push(new Angler1(this));
+      else if (randomize < 0.6) this.enemies.push(new Angler2(this));
+      else this.enemies.push(new LuckyFish(this));
+      console.log(this.enemies);
     }
     checkCollision(rect1, rect2){
       const checkLeft = rect1.x < rect2.x + rect2.width;
