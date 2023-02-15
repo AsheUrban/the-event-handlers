@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
     }
     update() {
       this.x += this.speed;
-      if(this.x > this.game.width * 0.8) this.markedForDeletion = true;
+      if(this.x > this.game.width * 0.95) this.markedForDeletion = true;
     }    
     draw(context) {
       context.fillStyle = 'yellow';
@@ -73,16 +73,28 @@ window.addEventListener("load", () => {
       this.markedForDeletion = false;
       this.angle = 0;
       this.va = Math.random() * 0.2 - 0.1;
+      this.bounced = 0;
+      this.bottomBounceBoundary = Math.random() * 100 + 60;
     }
     update() {
       this.angle += this.va;
       this.speedY += this.gravity;
+      //move particles forward with speed
+      // this.x -= this.speedX + this.game.speed;
       this.x -= this.speedX;
       this.y += this.speedY;
       if(this.y > this.game.height + this.size || this.x < 0 - this.size) this.markedForDeletion = true;
+      if (this.y > this.game.height - this.bottomBounceBoundary && this.bounced < 2) {
+        this.bounced++;
+        this.speedY *= -0.7;
+      }
     }
     draw(context) {
-      context.drawImage(this.image, this.frameX * this.spriteSize, this.frameY * this.spriteSize, this.spriteSize, this.spriteSize, this.x, this.y, this.size, this.size);
+      context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.angle);
+      context.drawImage(this.image, this.frameX * this.spriteSize, this.frameY * this.spriteSize, this.spriteSize, this.spriteSize, this.size * -0.5, this.size * -0.5, this.size, this.size);
+      context.restore();
     }
   }
 
