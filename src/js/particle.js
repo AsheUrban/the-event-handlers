@@ -21,8 +21,6 @@ export class Particle {
   update() {
     this.angle += this.va;
     this.speedY += this.gravity;
-    //move particles forward with speed
-    // this.x -= this.speedX + this.game.speed;
     this.x -= this.speedX;
     this.y += this.speedY;
     if(this.y > this.game.height + this.size || this.x < 0 - this.size) this.markedForDeletion = true;

@@ -40,17 +40,13 @@ export class Player {
       if (this.powerUpTimer > this.powerUpLimit){
         this.powerUpTimer = 0;
         this.powerUp = false;
-        // this.frameY = 0;
       } else { 
         this.powerUpTimer += deltaTime;
-        // this.frameY = 1;
         this.game.ammo += 0.1;
       }
     }
   }
   draw(context) {
-    // context.fillStyle = 'magenta';
-    // context.fillRect(this.x, this.y, this.width, this.height);
     context.drawImage(this.image, this.x, this.y);
     this.projectiles.forEach(projectile => {
       projectile.draw(context);

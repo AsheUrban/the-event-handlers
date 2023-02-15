@@ -41,8 +41,6 @@ export class Jake extends Enemy {
     this.lives = 10;
     this.score = this.lives;
     this.image = document.getElementById('jake');
-    //character animation
-    //this.frameY = Math.floor(Math.random()* 3);
   }
 }
 
@@ -55,9 +53,7 @@ export class Mitchell extends Enemy {
     this.lives = 3;
     this.score = 15;
     this.type = 'lucky';
-    //character animation
     this.image = document.getElementById('mitchell');
-    //this.frameY = Math.floor(Math.random()* 3);
   }
 }
 
@@ -73,7 +69,7 @@ export class Jannon extends Enemy {
   }
 }
 
-  export class Ashe extends Enemy {
+export class Ashe extends Enemy {
   constructor(game) {
     super(game);
     this.width = 149;
