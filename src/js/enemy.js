@@ -2,7 +2,7 @@ export class Enemy {
   constructor(game) {
     this.game = game;
     this.x = this.game.width;
-    this.speedX = Math.random() * -1.5 - 0.5;
+    this.speedX = (Math.random() * -2 -.5);
     this.markedForDeletion = false;
   }
   update() {
@@ -58,5 +58,13 @@ export class LuckyFish extends Enemy {
     //character animation
     //this.image = document.getElementById('lucky');
     //this.frameY = Math.floor(Math.random()* 3);
+  }
+}
+
+export class Jannon extends Enemy {
+  constructor(game) {
+    super(game);
+    this.width = 156
+    this.height = 50
   }
 }

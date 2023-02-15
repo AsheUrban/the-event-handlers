@@ -25,12 +25,13 @@ export class Game {
     this.ammoInterval = 200;
     this.gameOver = false;
     this.score = 0;
-    this.winningScore = 100;
+    this.winningScore = 1000000;
     this.gameTime = 0;
-    this.timeLimit = 30000;
+    this.timeLimit = 500000;
     //this.speed = 1;
   }
   update(deltaTime) {
+    
     this.firingInterval += deltaTime;
     if (!this.gameOver) this.gameTime += deltaTime;
     if (this.gameTime > this.timeLimit) this.gameOver = true;
@@ -53,7 +54,7 @@ export class Game {
           this.particles.push(new Particle(this, enemy.x + enemy.width*0.5, enemy.y + enemy.height*0.5));
         }
         if (enemy.type === 'lucky') this.player.enterPowerUp();
-        else this.score --;
+        else if (!this.gameOver) this.score =0;
       }
       this.player.projectiles.forEach(projectile => {
         if (this.checkCollision(projectile, enemy)){
@@ -66,7 +67,7 @@ export class Game {
               this.particles.push(new Particle(this, enemy.x + enemy.width*0.5, enemy.y + enemy.height*0.5));
             }
             if (!this.gameOver) this.score += enemy.score;
-            if (this.score > this.winningScore) this.gameOver = true;
+            if (this.score >= this.winningScore) this.gameOver = true;
           }
         }
       });
@@ -75,7 +76,8 @@ export class Game {
     this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
     if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
       this.addEnemy();
-      this.enemyTimer = 0;
+      this.enemyTimer = 0 + (this.gameTime*.01);
+      console.log(this.enemies);
     } else {
       this.enemyTimer += deltaTime;
     }
@@ -91,8 +93,8 @@ export class Game {
   }
   addEnemy() {
     const randomize = Math.random();
-    if (randomize < 0.3) this.enemies.push(new Angler1(this));
-    else if (randomize < 0.6) this.enemies.push(new Angler2(this));
+    if (randomize < 0.4) this.enemies.push(new Angler1(this));
+    else if (randomize < 0.8) this.enemies.push(new Angler2(this));
     else this.enemies.push(new LuckyFish(this));
   }
   checkCollision(rect1, rect2){
