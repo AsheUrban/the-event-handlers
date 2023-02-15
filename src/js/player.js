@@ -3,8 +3,8 @@ import { Projectile } from './projectile';
 export class Player {
   constructor(game) {
     this.game = game;
-    this.width = 120;
-    this.height = 120;
+    this.width = 96;
+    this.height = 100;
     this.x = 20;
     this.y = 100;
     this.speedY = 0;
@@ -13,6 +13,7 @@ export class Player {
     this.powerUp = false;
     this.powerUpTimer = 0;
     this.powerUpLimit = 10000;
+    this.image = document.getElementById('player');
   }
   update(deltaTime) {
     if (this.y > this.game.height - this.height * 0.1) this.y = -this.height * 0.9;
@@ -48,15 +49,16 @@ export class Player {
     }
   }
   draw(context) {
-    context.fillStyle = 'magenta';
-    context.fillRect(this.x, this.y, this.width, this.height);
+    // context.fillStyle = 'magenta';
+    // context.fillRect(this.x, this.y, this.width, this.height);
+    context.drawImage(this.image, this.x, this.y);
     this.projectiles.forEach(projectile => {
       projectile.draw(context);
     });
   }
   shootTop(){ 
     if (this.game.ammo > 0){
-      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 60));
+      this.projectiles.push(new Projectile(this.game, this.x + 50,  this.y + 48));
       this.game.ammo--;
     }
     this.game.firingInterval = 0;
@@ -64,8 +66,8 @@ export class Player {
   }
   shootBottom() {
     if (this.game.ammo>0) {
-      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 90));
-      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 30));
+      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 72));
+      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 24));
     }
   }
   enterPowerUp () {

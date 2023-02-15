@@ -1,9 +1,8 @@
 import { Particle } from './particle';
 import { Player } from './player';
-import { Angler1, Angler2, LuckyFish, Jannon } from './enemy';
+import { Carl, Jake, Mitchell, Jannon, Ashe } from './enemy';
 import { InputHandler, UI } from './../index';
 import { Background } from './layers.js';
-
 
 export class Game {
   constructor(width, height) {
@@ -31,11 +30,11 @@ export class Game {
     this.speed = 1;
   }
   update(deltaTime) {
-    
     this.firingInterval += deltaTime;
     if (!this.gameOver) this.gameTime += deltaTime;
     if (this.gameTime > this.timeLimit) this.gameOver = true;
     this.background.update();
+    this.background.layer5.update();
     this.player.update(deltaTime);
     if(this.ammoTimer > this.ammoInterval) {
       if(this.ammo < this.maxAmmo) {
@@ -73,12 +72,10 @@ export class Game {
         }
       });
     });
-
     this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
     if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
-      // this.addEnemy();
+      this.addEnemy();
       this.enemyTimer = 0 + (this.gameTime*.01);
-      // console.log(this.enemies);
     } else {
       this.enemyTimer += deltaTime;
     }
@@ -91,15 +88,15 @@ export class Game {
     this.enemies.forEach(enemy => {
       enemy.draw(context);
     });
-    //this.background.layer4.draw(context);
+    this.background.layer5.draw(context);
   }
   addEnemy() {
     const randomize = Math.random();
-    if (randomize < 0.4) this.enemies.push(new Angler1(this));
-    else if (randomize < 0.8) this.enemies.push(new Angler2(this));
-    else if (randomize < 0.9) this.enemies.push(new Jannon(this));
-    else this.enemies.push(new LuckyFish(this));
-     
+    if ( 0 < randomize && randomize < 0.2) this.enemies.push(new Carl(this));
+    else if (0.2 < randomize && randomize < 0.4) this.enemies.push(new Jake(this));
+    else if (0.4 < randomize && randomize < 0.6) this.enemies.push(new Jannon(this));
+    else if (0.6 < randomize && randomize < 0.8) this.enemies.push(new Ashe(this));
+    else  if (.08 < randomize && randomize < 1) this.enemies.push(new Mitchell(this));
   }
   checkCollision(rect1, rect2){
     const checkLeft = rect1.x < rect2.x + rect2.width;
