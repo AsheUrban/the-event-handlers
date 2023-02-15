@@ -64,7 +64,7 @@ export class LuckyFish extends Enemy {
 export class Jannon extends Enemy {
   constructor(game) {
     super(game);
-    this.width = 156
-    this.height = 50
+    this.width = 156;
+    this.height = 50;
   }
 }

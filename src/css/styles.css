@@ -15,6 +15,6 @@
   max-height: 100%;
 }
 
-/* #particles { */
-  /* display: none;
-} */
+#particles, #background1, #background2, #background3, #background4 { 
+   display: none;
+}

@@ -2,14 +2,14 @@ import { Particle } from './particle';
 import { Player } from './player';
 import { Angler1, Angler2, LuckyFish } from './enemy';
 import { InputHandler, UI } from './../index';
-
-
+import { Background } from './layers.js'
 
 
 export class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
+    this.background = new Background(this);
     this.player = new Player(this);
     this.input = new InputHandler(this);
     this.ui = new UI(this);
@@ -28,13 +28,14 @@ export class Game {
     this.winningScore = 1000000;
     this.gameTime = 0;
     this.timeLimit = 500000;
-    //this.speed = 1;
+    this.speed = 1;
   }
   update(deltaTime) {
     
     this.firingInterval += deltaTime;
     if (!this.gameOver) this.gameTime += deltaTime;
     if (this.gameTime > this.timeLimit) this.gameOver = true;
+    this.background.update();
     this.player.update(deltaTime);
     if(this.ammoTimer > this.ammoInterval) {
       if(this.ammo < this.maxAmmo) {
@@ -77,12 +78,13 @@ export class Game {
     if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
       this.addEnemy();
       this.enemyTimer = 0 + (this.gameTime*.01);
-      console.log(this.enemies);
+      // console.log(this.enemies);
     } else {
       this.enemyTimer += deltaTime;
     }
   }
   draw(context) {
+    this.background.draw(context);
     this.player.draw(context);
     this.ui.draw(context);
     this.particles.forEach(particle => particle.draw(context));
