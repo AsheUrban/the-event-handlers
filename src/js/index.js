@@ -48,15 +48,55 @@ window.addEventListener("load", () => {
     }
     update() {
       this.x += this.speed;
-      if(this.x > this.game.width * 0.8) this.markedForDeletion = true;
-    }
+      if(this.x > this.game.width * 0.95) this.markedForDeletion = true;
+    }    
     draw(context) {
-      context.fillStyle = 'hotpink';
+      context.fillStyle = 'yellow';
       context.fillRect(this.x, this.y, this.width, this.height);
     }
   }
 
-  class Particle {}
+  class Particle {
+    constructor(game, x, y) {
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.image = document.getElementById("particles");
+      this.frameX = Math.floor(Math.random() * 3);
+      this.frameY = Math.floor(Math.random() * 3);
+      this.spriteSize = 50;
+      this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
+      this.size = this.spriteSize * this.sizeModifier;
+      this.speedX = Math.random() * 12 - 6;
+      this.speedY = Math.random() * -15;
+      this.gravity = 0.5;
+      this.markedForDeletion = false;
+      this.angle = 0;
+      this.va = Math.random() * 0.2 - 0.1;
+      this.bounced = 0;
+      this.bottomBounceBoundary = Math.random() * 100 + 60;
+    }
+    update() {
+      this.angle += this.va;
+      this.speedY += this.gravity;
+      //move particles forward with speed
+      // this.x -= this.speedX + this.game.speed;
+      this.x -= this.speedX;
+      this.y += this.speedY;
+      if(this.y > this.game.height + this.size || this.x < 0 - this.size) this.markedForDeletion = true;
+      if (this.y > this.game.height - this.bottomBounceBoundary && this.bounced < 2) {
+        this.bounced++;
+        this.speedY *= -0.7;
+      }
+    }
+    draw(context) {
+      context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.angle);
+      context.drawImage(this.image, this.frameX * this.spriteSize, this.frameY * this.spriteSize, this.spriteSize, this.spriteSize, this.size * -0.5, this.size * -0.5, this.size, this.size);
+      context.restore();
+    }
+  }
 
   class Player {
     constructor(game) {
@@ -72,17 +112,19 @@ window.addEventListener("load", () => {
       this.powerUpTimer = 0;
       this.powerUpLimit = 10000;
     }
-    update() {
+    update(deltaTime) {
+      if (this.y > this.game.height - this.height * 0.1) this.y = -this.height * 0.9;
+      else if (this.y < -this.height * 0.9) this.y = this.game.height * .9;
       if (this.game.keys.up === true && this.game.keys.down === true) {
+        // evaluate this statement ? do this if statement true : do this if false
         this.game.keys.lastPressed === "up" ? this.speedY = -this.maxSpeed : this.speedY = this.maxSpeed;
-      } else if (this.game.keys.up && this.y > -20) {
+      } else if (this.game.keys.up) {
         this.speedY = -this.maxSpeed;
-      } else if (this.game.keys.down && (this.y +this.height < 530)) {
+      } else if (this.game.keys.down) {
         this.speedY = this.maxSpeed;
       } else {
         this.speedY = 0;
       }
-      
       if (this.game.keys.shoot && this.game.firingInterval>75) this.game.player.shootTop();
       this.y += this.speedY;
       //handle projectiles
@@ -95,8 +137,11 @@ window.addEventListener("load", () => {
         if (this.powerUpTimer > this.powerUpLimit){
           this.powerUpTimer = 0;
           this.powerUp = false;
+          // this.frameY = 0;
         } else { 
           this.powerUpTimer += deltaTime;
+          // this.frameY = 1;
+          this.game.ammo += 0.1;
         }
       }
     }
@@ -113,6 +158,18 @@ window.addEventListener("load", () => {
         this.game.ammo--;
       }
       this.game.firingInterval = 0;
+      if (this.powerUp) this.shootBottom();
+    }
+    shootBottom() {
+      if (this.game.ammo>0) {
+        this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 90));
+        this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 30));
+      }
+    }
+    enterPowerUp () {
+      this.powerUpTimer = 0;
+      this.powerUp = true;
+      this.game.ammo = this.game.maxAmmo;
     }
   }
 
@@ -122,8 +179,6 @@ window.addEventListener("load", () => {
       this.x = this.game.width;
       this.speedX = Math.random() * -1.5 - 0.5;
       this.markedForDeletion = false;
-
-
     }
     update() {
       this.x += this.speedX;
@@ -137,6 +192,7 @@ window.addEventListener("load", () => {
       context.fillText(this.lives, this.x + (this.width / 2), this.y + (this.height / 2));
     }
   }
+
   class Angler1 extends Enemy {
     constructor(game) {
       super(game);
@@ -150,6 +206,7 @@ window.addEventListener("load", () => {
       //this.frameY = Math.floor(Math.random()* 3);
     }
   }
+
   class Angler2 extends Enemy {
     constructor(game) {
       super(game);
@@ -163,11 +220,12 @@ window.addEventListener("load", () => {
       //this.frameY = Math.floor(Math.random()* 3);
     }
   }
+
   class LuckyFish extends Enemy {
     constructor(game) {
       super(game);
-      this.width = 100 * .75;
-      this.height = 100 * .75;
+      this.width = 100 * .25;
+      this.height = 100 * .25;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
       this.lives = 3;
       this.score = 15;
@@ -178,17 +236,16 @@ window.addEventListener("load", () => {
     }
   }
 
-  class Layer {}
+  // class Layer {}
 
-  class Background {}
+  // class Background {}
 
   class UI {
     constructor(game) {
       this.game = game;
       this.fontSize = 25;
-      this.fontFamily = 'Helvetica';
+      this.fontFamily = 'Papyrus';
       this.color = 'lightpink';
-
     }
     draw(context) {
       context.save();
@@ -199,11 +256,6 @@ window.addEventListener("load", () => {
       context.font = this.fontSize + "px " + this.fontFamily;
       //score 
       context.fillText("Score: " + this.game.score, 20, 40);
-      //ammo
-
-      for(let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20 + 5 * i, 50, 3, 20);
-      }
       // Timer
       const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
       context.fillText('Timer:' + formattedTime, 20, 100);
@@ -223,6 +275,12 @@ window.addEventListener("load", () => {
         context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
         context.font = "25px " + this.fontFamily;
         context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
+      } 
+      //ammo
+
+      if (this.game.player.powerUp) context.fillStyle = 'cyan';
+      for(let i = 0; i < this.game.ammo; i++) {
+        context.fillRect(20 + 5 * i, 50, 3, 20);
       }
       context.restore();
     }
@@ -237,6 +295,7 @@ window.addEventListener("load", () => {
       this.ui = new UI(this);
       this.keys = {up: false, down: false, shoot: false, lastPressed: 'up'};
       this.enemies = [];
+      this.particles = [];
       this.enemyTimer=0;
       this.enemyInterval = 1000;
       this.ammo = 20;
@@ -255,7 +314,7 @@ window.addEventListener("load", () => {
       this.firingInterval += deltaTime;
       if (!this.gameOver) this.gameTime += deltaTime;
       if (this.gameTime > this.timeLimit) this.gameOver = true;
-      this.player.update();
+      this.player.update(deltaTime);
       if(this.ammoTimer > this.ammoInterval) {
         if(this.ammo < this.maxAmmo) {
           this.ammo++;
@@ -264,17 +323,28 @@ window.addEventListener("load", () => {
       } else {
         this.ammoTimer += deltaTime;
       }
+      this.particles.forEach(particle => particle.update());
+      this.particles = this.particles.filter(particle => !particle.markedForDeletion);
       this.enemies.forEach(enemy => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
+          for (let i = 0; i < 10; i++) {
+            this.particles.push(new Particle(this, enemy.x + enemy.width*0.5, enemy.y + enemy.height*0.5));
+          }
+          if (enemy.type === 'lucky') this.player.enterPowerUp();
+          else this.score --;
         }
         this.player.projectiles.forEach(projectile => {
           if (this.checkCollision(projectile, enemy)){
             enemy.lives--;
             projectile.markedForDeletion = true;
+            this.particles.push(new Particle(this, enemy.x + enemy.width*0.5, enemy.y + enemy.height*0.5));
             if (enemy.lives <= 0){
               enemy.markedForDeletion = true;
+              for (let i = 0; i < 15; i++) {
+                this.particles.push(new Particle(this, enemy.x + enemy.width*0.5, enemy.y + enemy.height*0.5));
+              }
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }
@@ -283,7 +353,6 @@ window.addEventListener("load", () => {
       });
 
       this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
-
       if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
         this.addEnemy();
         this.enemyTimer = 0;
@@ -294,6 +363,7 @@ window.addEventListener("load", () => {
     draw(context) {
       this.player.draw(context);
       this.ui.draw(context);
+      this.particles.forEach(particle => particle.draw(context));
       this.enemies.forEach(enemy => {
         enemy.draw(context);
       });
@@ -304,7 +374,7 @@ window.addEventListener("load", () => {
       if (randomize < 0.3) this.enemies.push(new Angler1(this));
       else if (randomize < 0.6) this.enemies.push(new Angler2(this));
       else this.enemies.push(new LuckyFish(this));
-      console.log(this.enemies);
+      // console.log(this.enemies);
     }
     checkCollision(rect1, rect2){
       const checkLeft = rect1.x < rect2.x + rect2.width;
