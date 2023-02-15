@@ -14,6 +14,7 @@ export class Player {
     this.powerUpTimer = 0;
     this.powerUpLimit = 10000;
     this.image = document.getElementById('player');
+    this.powerUpImage = document.getElementById('playerpowerup');
   }
   update(deltaTime) {
     if (this.y > this.game.height - this.height * 0.1) this.y = -this.height * 0.9;
@@ -47,14 +48,21 @@ export class Player {
     }
   }
   draw(context) {
-    context.drawImage(this.image, this.x, this.y);
+    if (!this.powerUp) {
+      context.drawImage(this.image, this.x, this.y);
+    } else {
+      context.drawImage(this.powerUpImage, this.x, this.y);
+    }
+    
+
     this.projectiles.forEach(projectile => {
       projectile.draw(context);
     });
   }
   shootTop(){ 
     if (this.game.ammo > 0){
-      this.projectiles.push(new Projectile(this.game, this.x + 50,  this.y + 48));
+      this.projectiles.push(new Projectile(this.game, this.x + 50, this.y + 48, 'straight'));
+      // this.game.projectile.y
       this.game.ammo--;
     }
     this.game.firingInterval = 0;
@@ -62,8 +70,8 @@ export class Player {
   }
   shootBottom() {
     if (this.game.ammo>0) {
-      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 72));
-      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 24));
+      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 72, 'up'));
+      this.projectiles.push(new Projectile(this.game, this.x + 60,  this.y + 24, 'down'));
     }
   }
   enterPowerUp () {

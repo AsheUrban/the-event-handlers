@@ -3,16 +3,32 @@ export class Enemy {
     this.game = game;
     this.x = this.game.width;
     this.speedX = (Math.random() * -2 -.5);
+    this.speedY = (Math.random() * -2 -.5);
+    this.up = true;
+    this.upTimer = 0;
+    this.upInterval = 1000;
     this.markedForDeletion = false;
   }
-  update() {
+  update(deltaTime) {
     this.x += this.speedX;
+    if(this.upTimer > this.upInterval) {
+      this.upTimer=0;
+      this.up = !this.up;
+    } else {
+      this.upTimer += deltaTime;
+    }
+    if(this.up) {
+      if(this.y > 0) {}
+      this.y+=this.speedY;
+    }else {
+      this.y-=this.speedY;
+    }
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
   draw(context) {
     // context.strokeRect(this.x, this.y, this.width, this.height);
     context.drawImage(this.image, this.x, this.y);
-    context.fillStyle = 'black';
+    context.fillStyle = 'blue';
     context.font = '20px Papyrus';
     context.fillText(this.lives, this.x + (this.width / 2), this.y + (this.height / 2));
   }
@@ -36,7 +52,7 @@ export class Jake extends Enemy {
   constructor(game) {
     super(game);
     this.width = 200;
-    this.height = 100 * .75;
+    this.height = 112;
     this.y = Math.random() * (this.game.height * 0.9 - this.height);
     this.lives = 10;
     this.score = this.lives;
@@ -63,7 +79,7 @@ export class Jannon extends Enemy {
     this.width = 50;
     this.height = 156;
     this.y = Math.random() * (this.game.height * 0.9 - this.height);
-    this.lives = 15;
+    this.lives = 10;
     this.score = 50;
     this.image = document.getElementById('jannon');
   }
@@ -75,7 +91,7 @@ export class Ashe extends Enemy {
     this.width = 149;
     this.height = 102;
     this.y = Math.random() * (this.game.height * 0.9 - this.height);
-    this.lives = 15;
+    this.lives = 7;
     this.score = 30;
     this.image = document.getElementById('ashe');
   }

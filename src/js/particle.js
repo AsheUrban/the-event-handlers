@@ -3,7 +3,7 @@ export class Particle {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.image = document.getElementById("particles");
+    this.image = document.getElementById("jackson");
     this.frameX = Math.floor(Math.random() * 3);
     this.frameY = Math.floor(Math.random() * 3);
     this.spriteSize = 50;
@@ -33,7 +33,7 @@ export class Particle {
     context.save();
     context.translate(this.x, this.y);
     context.rotate(this.angle);
-    context.drawImage(this.image, this.frameX * this.spriteSize, this.frameY * this.spriteSize, this.spriteSize, this.spriteSize, this.size * -0.5, this.size * -0.5, this.size, this.size);
+    context.drawImage(this.image, 0, 0, this.spriteSize, this.spriteSize, this.size * -0.5, this.size * -0.5, this.size, this.size);
     context.restore();
   }
 }

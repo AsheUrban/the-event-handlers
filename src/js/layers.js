@@ -31,7 +31,7 @@ export class Background {
     this.layer3 = new Layer(this.game, this.image3, 0.25);
     this.layer4 = new Layer(this.game, this.image4, 0.75);
     this.layer5 = new Layer(this.game, this.image5, 1.1);
-    this.layers = [this.layer1, this.layer3, this.layer2, this.layer4];
+    this.layers = [this.layer1, this.layer2, this.layer4];
   }
   update(){
     this.layers.forEach(layer => layer.update());
