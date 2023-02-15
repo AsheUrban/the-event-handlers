@@ -10,7 +10,7 @@ export class Layer {
 
   }
   update(){
-    if (this.x <= this.width) this.x = 0;
+    if (this.x <= -this.width) this.x = 0;
     else this.x -= this.game.speed * this.speedModifier;
     
   }
@@ -24,8 +24,14 @@ export class Background {
   constructor(game) {
     this.game = game;
     this.image1 = document.getElementById('background1');
+    this.image2 = document.getElementById('background2');
+    this.image3 = document.getElementById('background3');
+    this.image4 = document.getElementById('background4');
     this.layer1 = new Layer(this.game, this.image1, 1);
-    this.layers = [this.layer1];
+    this.layer2 = new Layer(this.game, this.image2, 2);
+    this.layer3 = new Layer(this.game, this.image3, 1.5);
+    this.layer4 = new Layer(this.game, this.image4, 2.5);
+    this.layers = [this.layer1, this.layer3, this.layer2, this.layer4];
   }
   update(){
     this.layers.forEach(layer => layer.update());

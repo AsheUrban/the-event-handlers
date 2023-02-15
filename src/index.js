@@ -84,11 +84,6 @@ export class UI {
   }
 }
 
-// class Layer {}
-
-// class Background {}
-
-
 window.addEventListener("load", () => {
   //canvas setup
   const canvas = document.getElementById("canvas1");

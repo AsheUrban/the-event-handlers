@@ -10,8 +10,8 @@ export class Enemy {
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
   draw(context) {
-    context.fillStyle = 'orange';
-    context.fillRect(this.x, this.y, this.width, this.height);
+    // context.fillStyle = 'orange';
+    // context.fillRect(this.x, this.y, this.width, this.height);
     context.fillStyle = 'black';
     context.font = '20px Papyrus';
     context.fillText(this.lives, this.x + (this.width / 2), this.y + (this.height / 2));
@@ -56,7 +56,7 @@ export class LuckyFish extends Enemy {
     this.score = 15;
     this.type = 'lucky';
     //character animation
-    //this.image = document.getElementById('lucky');
+    this.image = document.getElementById('mitchell');
     //this.frameY = Math.floor(Math.random()* 3);
   }
 }
@@ -64,7 +64,12 @@ export class LuckyFish extends Enemy {
 export class Jannon extends Enemy {
   constructor(game) {
     super(game);
-    this.width = 156;
-    this.height = 50;
+    this.width = 50;
+    this.height = 156;
+    this.y = Math.random() * (this.game.height * 0.9 - this.height);
+    this.lives = 30;
+    this.score = 50;
+    this.image = document.getElementById('jannon');
+    
   }
 }

@@ -1,8 +1,8 @@
 import { Particle } from './particle';
 import { Player } from './player';
-import { Angler1, Angler2, LuckyFish } from './enemy';
+import { Angler1, Angler2, LuckyFish, Jannon } from './enemy';
 import { InputHandler, UI } from './../index';
-import { Background } from './layers.js'
+import { Background } from './layers.js';
 
 
 export class Game {
@@ -76,7 +76,7 @@ export class Game {
 
     this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
     if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
-      this.addEnemy();
+      // this.addEnemy();
       this.enemyTimer = 0 + (this.gameTime*.01);
       // console.log(this.enemies);
     } else {
@@ -97,7 +97,9 @@ export class Game {
     const randomize = Math.random();
     if (randomize < 0.4) this.enemies.push(new Angler1(this));
     else if (randomize < 0.8) this.enemies.push(new Angler2(this));
+    else if (randomize < 0.9) this.enemies.push(new Jannon(this));
     else this.enemies.push(new LuckyFish(this));
+     
   }
   checkCollision(rect1, rect2){
     const checkLeft = rect1.x < rect2.x + rect2.width;
