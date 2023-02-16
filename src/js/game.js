@@ -24,9 +24,9 @@ export class Game {
     this.ammoInterval = 200;
     this.gameOver = false;
     this.score = 0;
-    this.winningScore = 1000000;
+    this.winningScore = 500;
     this.gameTime = 0;
-    this.timeLimit = 500000;
+    this.timeLimit = 60000;
     this.speed = 1;
   }
   update(deltaTime) {

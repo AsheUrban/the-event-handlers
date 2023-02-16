@@ -8,7 +8,6 @@ export class Projectile {
     this.speed = 13;
     this.markedForDeletion = false;
     this.angle = angle;
-    
   }
   update() {
     this.x += this.speed;
@@ -17,7 +16,6 @@ export class Projectile {
     } else if (this.angle === 'down') {
       this.y -= this.speed/10;
     }
-    
     if(this.x > this.game.width * 0.95) this.markedForDeletion = true;
   }    
   draw(context) {

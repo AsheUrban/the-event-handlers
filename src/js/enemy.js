@@ -4,25 +4,37 @@ export class Enemy {
     this.x = this.game.width;
     this.speedX = (Math.random() * -2 -.5);
     this.speedY = (Math.random() * -2 -.5);
-    this.up = true;
+    this.up;
     this.upTimer = 0;
-    this.upInterval = 1000;
+    this.upInterval = 500;
     this.markedForDeletion = false;
   }
   update(deltaTime) {
-    this.x += this.speedX;
+    
+
     if(this.upTimer > this.upInterval) {
       this.upTimer=0;
-      this.up = !this.up;
+      if(this.up) {
+        this.up = false;
+      } else {
+        this.up = true;
+      }
     } else {
       this.upTimer += deltaTime;
     }
+    
     if(this.up) {
-      if(this.y > 0) {}
-      this.y+=this.speedY;
-    }else {
-      this.y-=this.speedY;
+      if(this.y < this.game.height-this.height) {
+        this.y+=this.speedY;
+      }
+    } else {
+      if(this.y >= 0 ) {
+        this.y-=this.speedY;
+      }
+      
     }
+    this.x += this.speedX;
+
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
   draw(context) {
