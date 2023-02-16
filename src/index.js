@@ -83,6 +83,8 @@ export class UI {
     context.restore();
   }
 }
+
+
 window.addEventListener("load", () => {
   //canvas setup
   const canvas = document.getElementById("canvas1");

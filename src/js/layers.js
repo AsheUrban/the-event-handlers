@@ -27,9 +27,9 @@ export class Background {
     this.image4 = document.getElementById("background4");
     this.image5 = document.getElementById("background5");
     this.layer1 = new Layer(this.game, this.image1, 0);
-    this.layer2 = new Layer(this.game, this.image2, 0.5);
-    this.layer3 = new Layer(this.game, this.image3, 0.25);
-    this.layer4 = new Layer(this.game, this.image4, 0.75);
+    this.layer2 = new Layer(this.game, this.image2, 0.25);
+    this.layer3 = new Layer(this.game, this.image3, 0.10);
+    this.layer4 = new Layer(this.game, this.image4, 0.40);
     this.layer5 = new Layer(this.game, this.image5, 1.1);
     this.layers = [this.layer1, this.layer2, this.layer4];
   }
