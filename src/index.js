@@ -55,7 +55,7 @@ export class UI {
       context.textAlign = "center";
       let message1;
       let message2;
-      if (this.game.score > this.game.winningScore) {
+      if (this.game.score >= this.game.winningScore) {
         message1 = "You win!";
         message2 = "Don't let it go to your head.";
       } else {
@@ -76,7 +76,6 @@ export class UI {
       );
     }
     //ammo
-
     if (this.game.player.powerUp) context.fillStyle = "cyan";
     for (let i = 0; i < this.game.ammo; i++) {
       context.fillRect(20 + 5 * i, 50, 3, 20);
@@ -84,19 +83,12 @@ export class UI {
     context.restore();
   }
 }
-
-// class Layer {}
-
-// class Background {}
-
-
 window.addEventListener("load", () => {
   //canvas setup
   const canvas = document.getElementById("canvas1");
   const ctx = canvas.getContext("2d");
   canvas.width = 1500;
   canvas.height = 500;
-
   const game = new Game(canvas.width, canvas.height);
   let lastTime = 0;
   // animation loop

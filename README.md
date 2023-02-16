@@ -27,7 +27,10 @@ _Tutorial Link:_ https://www.youtube.com/watch?v=EvC3ge_puQk
 
 ## Game Play Instructions
 
-- _Brief description of functionality goes here._
+- _Use keyup and keydown to move player top to bottom._
+- _Use space bar to fire amunition. Ammo is tracked in top left corner._
+- _Score is tracked in top left corner._
+- _Mitchell(3) are powerups that increase firing power._
 
 ## Known Bugs
 
