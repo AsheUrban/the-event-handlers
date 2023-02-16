@@ -2,7 +2,6 @@ export class Enemy {
   constructor(game) {
     this.game = game;
     this.x = this.game.width;
-
     this.speedX = Math.random() * -2 - 0.5;
     this.speedY = Math.random() * -2 - 0.5;
     this.up;
@@ -21,7 +20,6 @@ export class Enemy {
     } else {
       this.upTimer += deltaTime;
     }
-
     if (this.up) {
       if (this.y > this.game.height) {
         this.up = !this.up;
@@ -35,7 +33,6 @@ export class Enemy {
         this.y -= this.speedY;
       }
     }
-
     // if(this.up) {
     //   if(this.y < this.game.height-this.height) {
     //     this.y+=this.speedY;
@@ -45,9 +42,7 @@ export class Enemy {
     //     this.y-=this.speedY;
     //   }
     // }
-
     this.x += this.speedX;
-
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
   draw(context) {

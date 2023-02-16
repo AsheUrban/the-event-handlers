@@ -1,4 +1,3 @@
-
 import { Projectile } from "./projectile";
 
 export class Player {
@@ -60,7 +59,6 @@ export class Player {
     } else {
       context.drawImage(this.powerUpImage, this.x, this.y);
     }
-
     this.projectiles.forEach((projectile) => {
       projectile.draw(context);
     });
@@ -91,3 +89,4 @@ export class Player {
     this.powerUp = true;
     this.game.ammo = this.game.maxAmmo;
   }
+}
