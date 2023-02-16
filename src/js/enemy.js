@@ -33,15 +33,6 @@ export class Enemy {
         this.y -= this.speedY;
       }
     }
-    // if(this.up) {
-    //   if(this.y < this.game.height-this.height) {
-    //     this.y+=this.speedY;
-    //   }
-    // } else {
-    //   if(this.y >= 0 ) {
-    //     this.y-=this.speedY;
-    //   }
-    // }
     this.x += this.speedX;
     if (this.x + this.width < 0) this.markedForDeletion = true;
   }
