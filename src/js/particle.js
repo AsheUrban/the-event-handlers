@@ -23,8 +23,12 @@ export class Particle {
     this.speedY += this.gravity;
     this.x -= this.speedX;
     this.y += this.speedY;
-    if(this.y > this.game.height + this.size || this.x < 0 - this.size) this.markedForDeletion = true;
-    if (this.y > this.game.height - this.bottomBounceBoundary && this.bounced < 2) {
+    if (this.y > this.game.height + this.size || this.x < 0 - this.size)
+      this.markedForDeletion = true;
+    if (
+      this.y > this.game.height - this.bottomBounceBoundary &&
+      this.bounced < 2
+    ) {
       this.bounced++;
       this.speedY *= -0.7;
     }
@@ -33,7 +37,17 @@ export class Particle {
     context.save();
     context.translate(this.x, this.y);
     context.rotate(this.angle);
-    context.drawImage(this.image, 0, 0, this.spriteSize, this.spriteSize, this.size * -0.5, this.size * -0.5, this.size, this.size);
+    context.drawImage(
+      this.image,
+      0,
+      0,
+      this.spriteSize,
+      this.spriteSize,
+      this.size * -0.5,
+      this.size * -0.5,
+      this.size,
+      this.size
+    );
     context.restore();
   }
 }

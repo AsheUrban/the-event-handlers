@@ -11,15 +11,15 @@ export class Projectile {
   }
   update() {
     this.x += this.speed;
-    if (this.angle === 'up') {
-      this.y += this.speed/10;
-    } else if (this.angle === 'down') {
-      this.y -= this.speed/10;
+    if (this.angle === "up") {
+      this.y += this.speed / 10;
+    } else if (this.angle === "down") {
+      this.y -= this.speed / 10;
     }
-    if(this.x > this.game.width * 0.95) this.markedForDeletion = true;
-  }    
+    if (this.x > this.game.width * 0.95) this.markedForDeletion = true;
+  }
   draw(context) {
-    context.fillStyle = 'yellow';
+    context.fillStyle = "yellow";
     context.fillRect(this.x, this.y, this.width, this.height);
   }
 }
