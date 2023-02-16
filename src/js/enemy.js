@@ -22,7 +22,7 @@ export class Enemy {
     }
 
     if (this.up) {
-      if (this.y > this.game.height + 200) {
+      if (this.y > this.game.height) {
         this.up = !this.up;
       } else {
         this.y += this.speedY;
