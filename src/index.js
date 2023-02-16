@@ -92,7 +92,6 @@ window.addEventListener("load", () => {
   canvas.height = 500;
   const game = new Game(canvas.width, canvas.height);
   let lastTime = 0;
-  let reset = false;
 
   function readyToStart(event){
     if (event.key === "w") {
@@ -127,21 +126,13 @@ window.addEventListener("load", () => {
     window.addEventListener("keydown", readyToStart);
   }
   // animation loop
-  function animate(timeStamp) {
-   
-    
+  function animate() {
+    let now = window.performance.now();
     window.removeEventListener('keydown', readyToStart);
-    const deltaTime = timeStamp - lastTime;
-    lastTime = timeStamp;
+    const deltaTime = now - lastTime;
+    lastTime = now;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.update(deltaTime);
-
-    if (!reset) {
-          console.log('inside reset');
-          reset = !reset;
-          game.startedgametime = timeStamp;
-        }
-
     game.draw(ctx);
     requestAnimationFrame(animate);
   }
