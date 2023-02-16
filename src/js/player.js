@@ -1,3 +1,4 @@
+
 import { Projectile } from "./projectile";
 
 export class Player {
@@ -90,4 +91,3 @@ export class Player {
     this.powerUp = true;
     this.game.ammo = this.game.maxAmmo;
   }
-}

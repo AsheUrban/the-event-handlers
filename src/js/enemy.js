@@ -2,6 +2,7 @@ export class Enemy {
   constructor(game) {
     this.game = game;
     this.x = this.game.width;
+
     this.speedX = Math.random() * -2 - 0.5;
     this.speedY = Math.random() * -2 - 0.5;
     this.up;
