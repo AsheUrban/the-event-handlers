@@ -1,43 +1,52 @@
 # _The Event Handlers_
 
-#### By _Ashe Urban, Mitchell Gantz, Jannon Sielaff, Jacob Maier, Jackson Levine, & Carl Sustrich_
-
-#### 
+#### By _Ashe Urban, Thomas Taylor, and Ryan Spencer_
 
 ## Technologies Used
-
-- _JavaScript_
-- _HTML_
-- _CSS_
-- _Webpack_
-- _eslint_
-- _babel_
+* _JavaScript_
+* _HTML_
+* _CSS_
+* _Webpack_
+* _npm_
+* _Node.js_
 
 ## Description
+_The Event Handlers_ is a 2D side-scrolling browser game built from scratch using Vanilla JavaScript. Players navigate through an obstacle-filled world, avoiding hazards and accumulating points. The game implements functional win/lose logic, collision detection, and a dynamic scoring system based on player performance.
 
-_Following along with one of Frank's Laboratory tutorials, we built a 2d game in vanilla javascript._
-
-_Tutorial Link:_ https://www.youtube.com/watch?v=EvC3ge_puQk
+The project emphasizes clean separation of concerns, modular code structure, and the fundamentals of real-time gameplay loops — including gravity simulation, movement physics, and input-based event handling. It demonstrates how to manage animation frames, track state, and structure reusable components without reliance on external game frameworks.
 
 ## Setup/Installation Requirements
-
-- _Clone or download to your local repository_
-- _run npm install_
-- _npm run start to build and launch server_
-
-## Game Play Instructions
-
-- _Use keyup and keydown to move player top to bottom._
-- _Use space bar to fire amunition. Ammo is tracked in top left corner._
-- _Score is tracked in top left corner._
-- _Mitchell(3) are powerups that increase firing power._
+* Clone this repository to your local machine:
+  ```bash
+  git clone https://github.com/AsheUrban/the-event-handlers.git
+  ```
+* Navigate into the project directory:
+  ```bash
+  cd the-event-handlers
+  ```
+* Install all dependencies:
+  ```bash
+  npm install
+  ```
+* Build and launch the project in development mode:
+  ```bash
+  npm run start
+  ```
+  This command uses Webpack to compile the JavaScript files and automatically open the game in your default browser at:
+  ```
+  http://localhost:8080/
+  ```
+* Once the game launches:
+  - Use the **arrow keys** (← ↑ ↓ →) or **WASD keys** to move your character.
+  - Avoid obstacles and survive as long as possible to increase your score.
+  - If you collide with an obstacle, a game-over screen will appear.
+  - To restart, simply refresh the browser window or press the reset button if available.
 
 ## Known Bugs
-
-- _None_
+* _None known at this time._
 
 ## License
+_This software is provided for educational purposes only and is not intended for commercial use._    
 
-_MIT_
-
-Copyright (c) _2023_ _Ashe Urban, Mitchell Gantz, Jannon Sielaff, Jacob Maier, Jackson Levine, & Carl Sustrich_
+Copyright (c) _2023_  
+_Ashe Urban, Thomas Taylor, and Ryan Spencer_
